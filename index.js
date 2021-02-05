@@ -18,12 +18,21 @@ export default class XPay {
     }
 
 
+    // /**
+    //  * 设置微信APPID
+    //  * @param id
+    //  */
+    // static setWxId(id) {
+    //     NativeModules.PutiPay.setWxId(id);
+    // }
+
     /**
      * 设置微信APPID
      * @param id
+     * @param universalLink
      */
-    static setWxId(id) {
-        NativeModules.PutiPay.setWxId(id);
+    static setWxId(id, universalLink) {
+        NativeModules.PutiPay.setWxId(id, universalLink);
     }
 
     /**

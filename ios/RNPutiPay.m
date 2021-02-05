@@ -53,10 +53,18 @@ RCT_EXPORT_MODULE(PutiPay)
     }
 }
 
-RCT_EXPORT_METHOD(setWxId:(NSString *)wxid){
+//RCT_EXPORT_METHOD(setWxId:(NSString *)wxid){
+//    wxOpenId = wxid;
+//    //[WXApi registerApp:wxid];
+//    [WXApi registerApp:wxid universalLink: @"https://mobile-youshi.i202004.dev7.cn/padkejiyoushi/"];
+//}
+
+RCT_EXPORT_METHOD(setWxId:(NSString *)wxid  universalLink:(NSString *)universalLink){
     wxOpenId = wxid;
-    [WXApi registerApp:wxid];
+    //[WXApi registerApp:wxid];
+    [WXApi registerApp:wxid universalLink: universalLink];
 }
+
 RCT_EXPORT_METHOD(setAlipayScheme:(NSString *)scheme){
     alipayScheme = scheme;
 }
@@ -64,10 +72,10 @@ RCT_EXPORT_METHOD(alipay:(NSString *)info callback:(RCTResponseSenderBlock)callb
 {
     alipayCallBack = callback;
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+
         [[AlipaySDK defaultService] payOrder:info fromScheme:alipayScheme callback:^(NSDictionary *resultDic) {
             NSLog(@"alipay:callback");
-            
+
             callback([[NSArray alloc] initWithObjects:resultDic, nil]);
         }];
     });
@@ -75,7 +83,7 @@ RCT_EXPORT_METHOD(alipay:(NSString *)info callback:(RCTResponseSenderBlock)callb
 
 RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock)callback)
 {
-    
+
     NSLog(@"wxPay:%@", params);
     //需要创建这个支付对象
     PayReq *req   = [[PayReq alloc] init];
@@ -97,7 +105,8 @@ RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock
     req.sign = params[@"sign"];
     //发送请求到微信，等待微信返回onResp
     dispatch_async(dispatch_get_main_queue(), ^{
-        [WXApi sendReq:req];
+//        [WXApi sendReq:req];
+        [WXApi sendReq:req completion:nil];
     });
     wxCallBack = callback;
 }
@@ -120,4 +129,4 @@ RCT_EXPORT_METHOD(wxPay:(NSDictionary *)params  callback:(RCTResponseSenderBlock
     }
 }
 @end
-  
+
